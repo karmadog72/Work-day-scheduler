@@ -1,12 +1,27 @@
 var today = moment().format("MMMM Do YYYY, h:mm:ss a");
 var displayDate = (document.getElementById("date").innerHTML = today);
+var timeBlock = {};
+
+var createTimeBlock = function () {
+  var timeBlockLi = $("<li>").addClass("list-group-item");
+  var timeBlockSpan = $("<span>")
+    .addClass("badge badge-primary badge-pill")
+    .text(timeBlockDate);
+  var timeBlockP = $("<p>").addClass("m-1").text(timeBlockText);
+
+  // append span and p element to parent li
+  timeBlockLi.append(timeBlockSpan, timeBlockP);
+
+  // append to ul list on the page
+  $("#list-" + timeBlockList).append(timeBlockLi);
+};
 
 // momentjs time code
 moment().format("MMMM Do YYYY, h:mm:ss a");
 
-var timeBlock = function () {
-  tasks = JSON.parse(localStorage.setItem(text, time));
-
+var loadTimeBlock = function () {
+  timeBlock = JSON.parse(localStorage.getItem("timeBlock"));
+  console.log(date);
   if (!timeBlock) {
     timeBlock = {
       past: [],
@@ -17,7 +32,12 @@ var timeBlock = function () {
 
   $.each(timeBlock, function (list, arr) {
     arr.forEach(function (timeBlock) {
-      timeBlock(past.date, present.date, future.date, list);
+      createTimeBlock(
+        timeBlock.past,
+        timeBlock.present,
+        timeBlock.future,
+        list
+      );
     });
   });
 };
@@ -26,16 +46,18 @@ var saveTimeBlock = function () {
   localStorage.setItem("timeBlock", JSON.stringify(timeBlock));
 };
 
-var auditTimeBlock = function (timeBlock) {
-  var date = $(timeBlock).find("span").text().trim();
-
-  var time = moment(date, "L").set("hour", 16);
-  $(timeBlock.removeClass("list-group-item-warning list-group-item-danger"));
-  if (moment().isAfter(time)) {
-    $(timeBlock).addClass("list-group-item-danger");
-  } else if (Math.abs(moment().diff(time, "days")) <= 2) {
-    $(timeBlock).addClass("list-group-item-warning");
+var hour = moment().format("H");
+var auditTimeBlock = function () {
+  for (let i = 8; i < 16; i++) {
+    if (hour < i) {
+      document.getElementsByClassName("saveBtn").classList.add("btn-danger");
+    }
   }
 };
+// var saveBtn = document;
+// document.getElementsByClassName;
+// "saveBtn".addEventListener("click", function () {
+//   alert("Block Scheduled!");
+// });
 
-timeBlock();
+loadTimeBlock();
