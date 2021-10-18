@@ -11,17 +11,16 @@ var loadTimeBlock = function (i) {
     createTimeBlock(i);
   }
 };
-// creating variables for HTML
 var createTimeBlock = function (i) {
   var newLi = $("<li>").addClass("list-group-item");
   var newRow = $("<div></div>").addClass("row");
   var newTime = $("<div></div>")
     .addClass(
-      "col-2 d-flex align-items-left border border-light border-left-color: #32A1CE; justify-content-center "
+      "col-2 d-flex align-items-center border border-light border-left-color: transparent; justify-content-center "
     )
     .text(hours[i]);
   var newColInput = $("<div></div>").addClass(
-    "col-8 bg-info d-flex align-items-left justify-content-center "
+    "col-8 bg-white d-flex align-items-left justify-content-center "
   );
   var newInput = $(
     "<input type='textArea' style='height: 100%; width:100%'></input>"
@@ -34,24 +33,29 @@ var createTimeBlock = function (i) {
     "col-1 bg-warning text-black d-flex align-items-center"
   );
   var task = localStorage.getItem(hours[i]);
-  
   if (task) {
-      newInput.val(task)
+    newInput.val(task);
   }
-  var hour =moment().format("H";
-  if(hour > militaryHours[i]){
-      newInput.addClass('bg-danger')
+  var hour = moment().format("H");
+  if (hour > militaryHours[i]) {
+    newInput.addClass("bg-dark text-white");
   }
   if (hour == militaryHours[i]) {
-      newInput.addClass('bg-warning')
+    newInput.addClass("bg-light");
   }
   if (hour < militaryHours[i]) {
-      newInput.addClass('bg-success')
+    newInput.addClass("bg-info text-white");
   }
-  btnCol.append(saveBtn)
-  newColInput.append(newInput)
-  //append to ul list on the page 
-  newRow.append(newTime, newColInput, btnCol)
-  newLi.append(newRow)
+  btnCol.append(saveBtn);
+  newColInput.append(newInput);
+  // append to ul list on the page
+  newRow.append(newTime, newColInput, btnCol);
+  newLi.append(newRow);
   $("#list").append(newLi);
 };
+loadTimeBlock();
+$(".saveBtn").click(function () {
+  var taskHour = $(this).attr("data-id");
+  var taskText = $("#" + taskHour).val();
+  localStorage.setItem(taskHour, taskText);
+});
