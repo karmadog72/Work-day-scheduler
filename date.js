@@ -30,7 +30,7 @@ var createTimeBlock = function (i) {
     .attr("data-id", hours[i])
     .append('<i class="fas fa-save"></i>');
   var btnCol = $("<div></div>").addClass(
-    "col-1 bg-warning text-black d-flex align-items-center"
+    "col-1 bg-light text-dark d-flex align-items-center"
   );
   var task = localStorage.getItem(hours[i]);
   if (task) {
